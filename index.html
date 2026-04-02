@@ -1477,23 +1477,61 @@
           </div>
         </div>
 
-        <!-- Contact Form -->
+        <!-- Comprehensive Qualification Form -->
         <form class="contact-form fade-in" action="mailto:info@americancroprecovery.com" method="post" enctype="text/plain">
+
+          <!-- Section: Contact Info -->
+          <p style="font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;">Contact Information</p>
           <div class="form-row">
             <div class="form-group">
-              <label for="name">Full Name</label>
+              <label for="name">Full Name *</label>
               <input type="text" id="name" name="name" placeholder="John Smith" required>
             </div>
             <div class="form-group">
-              <label for="email">Email Address</label>
+              <label for="email">Email Address *</label>
               <input type="email" id="email" name="email" placeholder="john@example.com" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone Number *</label>
+            <input type="tel" id="phone" name="phone" placeholder="(555) 123-4567" required>
+          </div>
+
+          <!-- Section: Entity Details -->
+          <p style="font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;margin-top:2rem;">Business &amp; Entity Details</p>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="farm-name">Farm / Business Name</label>
+              <input type="text" id="farm-name" name="farm-name" placeholder="Smith Family Farms LLC">
+            </div>
+            <div class="form-group">
+              <label for="structure">Corporate Structure</label>
+              <select id="structure" name="structure">
+                <option value="" disabled selected>Select structure</option>
+                <option value="sole-prop">Sole Proprietorship</option>
+                <option value="llc">LLC</option>
+                <option value="corporation">Corporation</option>
+                <option value="partnership">Partnership</option>
+                <option value="s-corp">S-Corp</option>
+                <option value="trust">Trust</option>
+                <option value="other">Other</option>
+              </select>
             </div>
           </div>
           <div class="form-row">
             <div class="form-group">
-              <label for="phone">Phone Number</label>
-              <input type="tel" id="phone" name="phone" placeholder="(555) 123-4567">
+              <label for="year-started">Year Business Started</label>
+              <input type="number" id="year-started" name="year-started" placeholder="e.g. 1998" min="1900" max="2026">
             </div>
+            <div class="form-group">
+              <label for="years-farming">Years of Farming Experience</label>
+              <input type="number" id="years-farming" name="years-farming" placeholder="e.g. 25" min="0" max="100">
+            </div>
+          </div>
+
+          <!-- Section: Production Info -->
+          <p style="font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;margin-top:2rem;">Production Information</p>
+          <div class="form-row">
             <div class="form-group">
               <label for="operation">Operation Type</label>
               <select id="operation" name="operation">
@@ -1507,10 +1545,53 @@
                 <option value="other">Other</option>
               </select>
             </div>
+            <div class="form-group">
+              <label for="acres">Total Acres in Production</label>
+              <input type="number" id="acres" name="acres" placeholder="e.g. 1500" min="0">
+            </div>
           </div>
           <div class="form-group">
+            <label for="crops">Primary Crops / Livestock</label>
+            <input type="text" id="crops" name="crops" placeholder="e.g. Corn, Soybeans, Wheat, Cattle">
+          </div>
+
+          <!-- Section: USDA / FSA History -->
+          <p style="font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;margin-top:2rem;">USDA / FSA History</p>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fsa-registered">Registered with FSA?</label>
+              <select id="fsa-registered" name="fsa-registered">
+                <option value="" disabled selected>Select</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+                <option value="unsure">Not Sure</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="crop-insurance">Do You Have Crop Insurance?</label>
+              <select id="crop-insurance" name="crop-insurance">
+                <option value="" disabled selected>Select</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+                <option value="unsure">Not Sure</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="prior-programs">Have You Ever Received USDA Grants or Program Payments?</label>
+            <select id="prior-programs" name="prior-programs">
+              <option value="" disabled selected>Select</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+              <option value="unsure">Not Sure</option>
+            </select>
+          </div>
+
+          <!-- Section: Additional Info -->
+          <p style="font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;margin-top:2rem;">Additional Details</p>
+          <div class="form-group">
             <label for="message">Tell Us About Your Situation</label>
-            <textarea id="message" name="message" placeholder="Briefly describe your operation, the disaster or loss you experienced, and any prior contact with USDA/FSA..."></textarea>
+            <textarea id="message" name="message" placeholder="Describe your operation, any recent disasters or losses, and what kind of help you're looking for..."></textarea>
           </div>
           <button type="submit" class="btn-gold" style="width: 100%; text-align: center;">Request a Consultation</button>
         </form>
