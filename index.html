@@ -1530,6 +1530,27 @@
             </div>
           </div>
 
+          <!-- Section: Location -->
+          <p style="font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;margin-top:2rem;">Farm Location</p>
+          <div class="form-group">
+            <label for="farm-address">Primary Farm Address *</label>
+            <input type="text" id="farm-address" name="farm-address" placeholder="Start typing your address..." autocomplete="street-address" required>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="multi-location">More Than One Farming Location?</label>
+              <select id="multi-location" name="multi-location">
+                <option value="" disabled selected>Select</option>
+                <option value="no">No &mdash; 1 location</option>
+                <option value="yes">Yes &mdash; multiple locations</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="num-entities">How Many Entities Do You Operate?</label>
+              <input type="number" id="num-entities" name="num-entities" placeholder="e.g. 1" min="1" max="50">
+            </div>
+          </div>
+
           <!-- Section: Production Info -->
           <p style="font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;margin-top:2rem;">Production Information</p>
           <div class="form-row">
@@ -1709,6 +1730,39 @@
 
     fadeEls.forEach(el => observer.observe(el));
   </script>
+
+  <!-- Google Places Autocomplete for farm address -->
+  <!-- NOTE: Replace YOUR_API_KEY with ACR's Google Maps API key -->
+  <script>
+    function initAutocomplete() {
+      const addressInput = document.getElementById('farm-address');
+      if (addressInput && window.google && window.google.maps) {
+        const autocomplete = new google.maps.places.Autocomplete(addressInput, {
+          types: ['address'],
+          componentRestrictions: { country: 'us' }
+        });
+        autocomplete.addListener('place_changed', function() {
+          const place = autocomplete.getPlace();
+          // Store structured address data for weather API lookup
+          if (place.address_components) {
+            let county = '', state = '', zip = '';
+            place.address_components.forEach(function(c) {
+              if (c.types.includes('administrative_area_level_2')) county = c.long_name;
+              if (c.types.includes('administrative_area_level_1')) state = c.short_name;
+              if (c.types.includes('postal_code')) zip = c.long_name;
+            });
+            // Store in hidden fields or data attributes for backend use
+            addressInput.dataset.county = county;
+            addressInput.dataset.state = state;
+            addressInput.dataset.zip = zip;
+            addressInput.dataset.lat = place.geometry ? place.geometry.location.lat() : '';
+            addressInput.dataset.lng = place.geometry ? place.geometry.location.lng() : '';
+          }
+        });
+      }
+    }
+  </script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&callback=initAutocomplete"></script>
 
 </body>
 </html>
