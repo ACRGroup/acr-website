@@ -885,8 +885,10 @@
 
     .contact-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
+      grid-template-columns: 1fr;
+      gap: 3rem;
+      max-width: 800px;
+      margin: 0 auto;
     }
 
     .contact-info h3 {
@@ -1442,9 +1444,10 @@
       <div class="contact-grid">
 
         <!-- Contact Info -->
-        <div class="contact-info fade-in">
+        <div class="contact-info fade-in" style="text-align:center;">
           <h3>Let's Start the Conversation</h3>
           <p style="color: var(--text-muted); margin-bottom: 2rem;">Tell us about your operation and we'll identify the programs you may be eligible for.</p>
+          <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:2rem;margin-bottom:1rem;">
 
           <div class="contact-item">
             <div class="contact-icon">
@@ -1472,8 +1475,9 @@
             </div>
             <div>
               <span class="contact-item-label">Office Hours</span>
-              <span class="contact-item-value">Monday &ndash; Friday: 8:00 AM &ndash; 5:00 PM EST<br>Saturday: 8:00 AM &ndash; 4:00 PM EST<br>Sunday: Closed</span>
+              <span class="contact-item-value">Mon&ndash;Fri: 8&ndash;5 EST<br>Sat: 8&ndash;4 EST<br>Sun: Closed</span>
             </div>
+          </div>
           </div>
         </div>
 
@@ -1568,23 +1572,29 @@
               </select>
             </div>
             <div class="form-group">
-              <label for="crop-insurance">Do You Have Crop Insurance?</label>
+              <label for="crop-insurance">Do You Have Crop Insurance or NAP Coverage?</label>
               <select id="crop-insurance" name="crop-insurance">
+                <option value="" disabled selected>Select</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+                <option value="some-crops">Some Crops</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="prior-programs">Have You Received USDA Grants or Program Payments?</label>
+              <select id="prior-programs" name="prior-programs">
                 <option value="" disabled selected>Select</option>
                 <option value="yes">Yes</option>
                 <option value="no">No</option>
                 <option value="unsure">Not Sure</option>
               </select>
             </div>
-          </div>
-          <div class="form-group">
-            <label for="prior-programs">Have You Ever Received USDA Grants or Program Payments?</label>
-            <select id="prior-programs" name="prior-programs">
-              <option value="" disabled selected>Select</option>
-              <option value="yes">Yes</option>
-              <option value="no">No</option>
-              <option value="unsure">Not Sure</option>
-            </select>
+            <div class="form-group">
+              <label for="state">State</label>
+              <input type="text" id="state" name="state" placeholder="e.g. Georgia">
+            </div>
           </div>
 
           <!-- Section: Additional Info -->
