@@ -13,6 +13,53 @@
 
   <style>
     /* ============================================================
+       SDRP URGENT TICKER
+       ============================================================ */
+    .sdrp-ticker {
+      background: #B8860B;
+      overflow: hidden;
+      white-space: nowrap;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1001;
+      height: 36px;
+      display: flex;
+      align-items: center;
+    }
+
+    .sdrp-ticker-link {
+      display: block;
+      width: 100%;
+      height: 100%;
+      text-decoration: none;
+    }
+
+    .sdrp-ticker-track {
+      display: inline-flex;
+      animation: ticker-scroll 20s linear infinite;
+      height: 100%;
+      align-items: center;
+    }
+
+    .sdrp-ticker-text {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--white);
+      padding: 0 1rem;
+      flex-shrink: 0;
+    }
+
+    @keyframes ticker-scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ============================================================
        RESET & BASE
        ============================================================ */
     *, *::before, *::after {
@@ -157,7 +204,7 @@
        ============================================================ */
     .nav {
       position: fixed;
-      top: 0;
+      top: 36px;
       left: 0;
       right: 0;
       z-index: 1000;
@@ -345,7 +392,7 @@
       position: relative;
       z-index: 1;
       max-width: 800px;
-      padding-top: 6rem;
+      padding-top: 8rem;
     }
 
     .hero h1 {
@@ -1099,6 +1146,20 @@
   </style>
 </head>
 <body>
+
+  <!-- ============================================================
+       SDRP URGENT BANNER (looping marquee)
+       ============================================================ -->
+  <div class="sdrp-ticker" id="sdrp-ticker">
+    <a href="#contact" class="sdrp-ticker-link">
+      <div class="sdrp-ticker-track">
+        <span class="sdrp-ticker-text">⚠ SDRP DEADLINE: APRIL 30, 2026 — CLICK HERE FOR EXPERT REPRESENTATION&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</span>
+        <span class="sdrp-ticker-text">⚠ SDRP DEADLINE: APRIL 30, 2026 — CLICK HERE FOR EXPERT REPRESENTATION&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</span>
+        <span class="sdrp-ticker-text">⚠ SDRP DEADLINE: APRIL 30, 2026 — CLICK HERE FOR EXPERT REPRESENTATION&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</span>
+        <span class="sdrp-ticker-text">⚠ SDRP DEADLINE: APRIL 30, 2026 — CLICK HERE FOR EXPERT REPRESENTATION&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</span>
+      </div>
+    </a>
+  </div>
 
   <!-- ============================================================
        NAVIGATION
