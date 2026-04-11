@@ -138,10 +138,10 @@
       font-family: 'Inter', sans-serif;
       font-size: 0.8rem;
       font-weight: 700;
-      letter-spacing: 4px;
+      letter-spacing: 6px;
       text-transform: uppercase;
       color: var(--gold);
-      margin-bottom: 1rem;
+      margin-bottom: 1.25rem;
       display: block;
     }
 
@@ -268,7 +268,7 @@
     }
 
     .nav-links a:hover {
-      color: var(--white);
+      color: var(--gold);
     }
 
     .nav-links a:hover::after {
@@ -293,7 +293,7 @@
       display: block;
       width: 24px;
       height: 2px;
-      background: var(--white);
+      background: var(--navy);
       transition: all var(--transition);
     }
 
@@ -347,6 +347,10 @@
       align-items: center;
       background: var(--navy);
       overflow: hidden;
+      background-image: linear-gradient(160deg, rgba(10,22,40,0.92) 0%, rgba(10,22,40,0.75) 100%), url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1920&q=80');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
     }
 
     /* Subtle wheat pattern overlay */
@@ -397,10 +401,11 @@
     }
 
     .hero h1 {
-      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-size: clamp(3.5rem, 8vw, 6.5rem);
       color: var(--white);
       margin-bottom: 1.5rem;
-      letter-spacing: -1px;
+      letter-spacing: -2px;
+      font-weight: 700;
     }
 
     .hero h1 em {
@@ -516,30 +521,34 @@
     }
 
     .about-image {
-      background: var(--navy);
-      height: 450px;
+      height: 500px;
       border-radius: 8px;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      color: rgba(255, 255, 255, 0.3);
+      align-items: flex-end;
+      justify-content: flex-start;
+      padding: 2rem;
+      color: rgba(255, 255, 255, 0.5);
       font-family: 'Inter', sans-serif;
-      font-size: 0.85rem;
+      font-size: 0.75rem;
       font-weight: 500;
       letter-spacing: 3px;
       text-transform: uppercase;
       position: relative;
       overflow: hidden;
+      background-image: linear-gradient(180deg, rgba(10,22,40,0.3) 0%, rgba(10,22,40,0.7) 100%), url('https://images.unsplash.com/photo-1560493676-04071c5f467b?w=800&q=80');
+      background-size: cover;
+      background-position: center;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.15);
     }
 
     .about-image::before {
       content: '';
       position: absolute;
-      top: 0;
+      bottom: 0;
       left: 0;
       right: 0;
-      bottom: 0;
-      background: linear-gradient(135deg, rgba(197, 160, 85, 0.1) 0%, transparent 50%);
+      height: 4px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light));
     }
 
     @media (max-width: 768px) {
@@ -586,8 +595,9 @@
     }
 
     .service-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+      transform: translateY(-12px);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+      border-top-color: var(--gold-dark);
     }
 
     .service-icon {
@@ -741,8 +751,8 @@
 
     .result-before {
       font-family: 'Inter', sans-serif;
-      font-size: 1rem;
-      color: rgba(255, 255, 255, 0.4);
+      font-size: 1.1rem;
+      color: rgba(200, 80, 80, 0.6);
       text-decoration: line-through;
     }
 
@@ -753,9 +763,10 @@
 
     .result-after {
       font-family: 'Playfair Display', serif;
-      font-size: 1.8rem;
+      font-size: 2.2rem;
       font-weight: 700;
       color: var(--gold);
+      text-shadow: 0 0 20px rgba(197, 160, 85, 0.3);
     }
 
     @media (max-width: 1024px) {
@@ -954,6 +965,7 @@
       border-radius: 8px;
       padding: 2.5rem;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+      border-left: 4px solid var(--gold);
     }
 
     .form-group {
@@ -1024,6 +1036,18 @@
     .footer {
       background: var(--navy);
       padding: 4rem 0 0;
+      position: relative;
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect fill="none" width="100" height="100"/><circle fill="rgba(255,255,255,0.02)" cx="50" cy="50" r="0.5"/></svg>');
+      pointer-events: none;
     }
 
     .footer-grid {
@@ -1099,6 +1123,7 @@
     .footer-social a:hover {
       border-color: var(--gold);
       background: rgba(197, 160, 85, 0.1);
+      box-shadow: 0 0 15px rgba(197, 160, 85, 0.25);
     }
 
     .footer-social svg {
@@ -1237,7 +1262,6 @@
           </ul>
         </div>
         <div class="about-image fade-in">
-          TEAM PHOTO
         </div>
       </div>
     </div>
