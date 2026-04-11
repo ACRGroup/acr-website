@@ -6,12 +6,29 @@
   <meta name="description" content="American Crop Recovery — Expert USDA disaster relief advocacy for America's farmers. We recover what's yours.">
   <title>American Crop Recovery | USDA Disaster Relief Advocacy</title>
 
-  <!-- Google Fonts -->
+  <!-- Preconnect for performance -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://images.unsplash.com">
+  <link rel="preconnect" href="https://plus.unsplash.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
 
   <style>
+    /* ============================================================
+       GRAIN FILTER (SVG noise)
+       ============================================================ */
+    .grain-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 200px 200px;
+      mix-blend-mode: overlay;
+    }
+
     /* ============================================================
        SDRP URGENT TICKER
        ============================================================ */
@@ -80,6 +97,7 @@
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       overflow-x: hidden;
+      cursor: default;
     }
 
     /* ============================================================
@@ -96,10 +114,12 @@
       --medium-gray: #E8E6E1;
       --dark-text: #1A1A2E;
       --text-muted: #5A5A6E;
-      --section-pad: 6rem;
-      --section-pad-mobile: 3rem;
+      --section-pad: 7rem;
+      --section-pad-mobile: 4rem;
       --container: 1200px;
-      --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      --ease-apple: cubic-bezier(0.16, 1, 0.3, 1);
+      --transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      --transition-fast: 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     /* ============================================================
@@ -111,18 +131,20 @@
       line-height: 1.2;
     }
 
-    p {
-      margin-bottom: 1rem;
-    }
+    p { margin-bottom: 1rem; }
 
     a {
       color: var(--navy);
       text-decoration: none;
-      transition: color var(--transition);
+      transition: color var(--transition-fast);
+      cursor: pointer;
     }
 
-    a:hover {
-      color: var(--gold);
+    a:hover { color: var(--gold); }
+
+    /* Custom cursor on interactive elements */
+    button, a, [role="button"], label[for] {
+      cursor: pointer;
     }
 
     /* ============================================================
@@ -164,6 +186,26 @@
       border-radius: 4px;
       cursor: pointer;
       transition: all var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Shimmer on btn-gold hover */
+    .btn-gold::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.4), transparent);
+      transform: skewX(-20deg);
+      transition: left 0.6s var(--ease-apple);
+      pointer-events: none;
+    }
+
+    .btn-gold:hover::before {
+      left: 160%;
     }
 
     .btn-gold:hover {
@@ -171,33 +213,31 @@
       border-color: var(--gold-dark);
       color: var(--navy);
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(197, 160, 85, 0.3);
+      box-shadow: 0 8px 28px rgba(197, 160, 85, 0.4);
     }
 
     /* ============================================================
-       SCROLL ANIMATIONS
+       SCROLL ANIMATIONS — dramatic (60px, 1s, Apple easing)
        ============================================================ */
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(40px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
     .fade-in {
       opacity: 0;
-      transform: translateY(40px);
-      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+      transform: translateY(60px);
+      transition: opacity 1s var(--ease-apple), transform 1s var(--ease-apple);
+      will-change: opacity, transform;
     }
 
     .fade-in.visible {
       opacity: 1;
       transform: translateY(0);
     }
+
+    /* Stagger siblings */
+    .fade-in:nth-child(1) { transition-delay: 0ms; }
+    .fade-in:nth-child(2) { transition-delay: 150ms; }
+    .fade-in:nth-child(3) { transition-delay: 300ms; }
+    .fade-in:nth-child(4) { transition-delay: 450ms; }
+    .fade-in:nth-child(5) { transition-delay: 600ms; }
+    .fade-in:nth-child(6) { transition-delay: 750ms; }
 
     /* ============================================================
        NAVIGATION
@@ -235,9 +275,7 @@
       white-space: nowrap;
     }
 
-    .nav-logo span {
-      color: var(--gold);
-    }
+    .nav-logo span { color: var(--gold); }
 
     .nav-links {
       display: flex;
@@ -252,19 +290,21 @@
       letter-spacing: 1.5px;
       text-transform: uppercase;
       color: var(--navy);
-      transition: color var(--transition);
+      transition: color var(--transition-fast);
       position: relative;
+      padding-bottom: 4px;
     }
 
+    /* Underline slides in from left on hover */
     .nav-links a::after {
       content: '';
       position: absolute;
-      bottom: -4px;
+      bottom: -2px;
       left: 0;
       width: 0;
-      height: 1px;
+      height: 1.5px;
       background: var(--gold);
-      transition: width var(--transition);
+      transition: width 0.4s var(--ease-apple);
     }
 
     .nav-links a:hover {
@@ -276,9 +316,7 @@
     }
 
     /* Hamburger (mobile) */
-    .nav-toggle {
-      display: none;
-    }
+    .nav-toggle { display: none; }
 
     .hamburger {
       display: none;
@@ -298,9 +336,7 @@
     }
 
     @media (max-width: 768px) {
-      .hamburger {
-        display: flex;
-      }
+      .hamburger { display: flex; }
 
       .nav-links {
         position: fixed;
@@ -316,9 +352,16 @@
         box-shadow: -10px 0 30px rgba(0, 0, 0, 0.3);
       }
 
-      .nav-toggle:checked ~ .nav-links {
-        right: 0;
+      .nav-toggle:checked ~ .nav-links { right: 0; }
+
+      .nav-links a {
+        font-size: 0.9rem;
+        color: rgba(255,255,255,0.85);
       }
+
+      .nav-links a:hover { color: var(--gold); }
+
+      .nav-links a::after { background: var(--gold); }
 
       .nav-toggle:checked ~ .hamburger span:nth-child(1) {
         transform: rotate(45deg) translate(5px, 5px);
@@ -331,10 +374,6 @@
       .nav-toggle:checked ~ .hamburger span:nth-child(3) {
         transform: rotate(-45deg) translate(5px, -5px);
       }
-
-      .nav-links a {
-        font-size: 0.9rem;
-      }
     }
 
     /* ============================================================
@@ -342,70 +381,99 @@
        ============================================================ */
     .hero {
       position: relative;
-      min-height: 100vh;
+      height: 100vh;
+      min-height: 700px;
       display: flex;
       align-items: center;
-      background: var(--navy);
       overflow: hidden;
-      background-image: linear-gradient(160deg, rgba(10,22,40,0.92) 0%, rgba(10,22,40,0.75) 100%), url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1920&q=80');
+      clip-path: polygon(0 0, 100% 0, 100% 95%, 0 100%);
+    }
+
+    /* Background image layer */
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1920&q=80');
       background-size: cover;
       background-position: center;
-      background-attachment: fixed;
+      will-change: transform;
+      transform: scale(1.08);
+      animation: hero-zoom 20s ease-in-out infinite alternate;
     }
 
-    /* Subtle wheat pattern overlay */
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background:
-        radial-gradient(ellipse at 20% 80%, rgba(197, 160, 85, 0.06) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 20%, rgba(197, 160, 85, 0.04) 0%, transparent 50%),
-        repeating-linear-gradient(
-          105deg,
-          transparent,
-          transparent 80px,
-          rgba(197, 160, 85, 0.015) 80px,
-          rgba(197, 160, 85, 0.015) 81px
-        );
-      pointer-events: none;
+    @keyframes hero-zoom {
+      0% { transform: scale(1.08); }
+      100% { transform: scale(1.14); }
     }
 
-    /* Subtle diagonal lines for texture */
-    .hero::after {
-      content: '';
+    /* Dark gradient overlay */
+    .hero-overlay {
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      inset: 0;
+      background: linear-gradient(
+        160deg,
+        rgba(10, 22, 40, 0.88) 0%,
+        rgba(10, 22, 40, 0.70) 60%,
+        rgba(10, 22, 40, 0.60) 100%
+      );
+      z-index: 1;
+    }
+
+    /* Diagonal lines texture */
+    .hero-texture {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
       background:
+        radial-gradient(ellipse at 20% 80%, rgba(197, 160, 85, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(197, 160, 85, 0.05) 0%, transparent 50%),
         repeating-linear-gradient(
           -30deg,
           transparent,
           transparent 120px,
-          rgba(255, 255, 255, 0.008) 120px,
-          rgba(255, 255, 255, 0.008) 121px
+          rgba(255, 255, 255, 0.012) 120px,
+          rgba(255, 255, 255, 0.012) 121px
         );
       pointer-events: none;
     }
 
     .hero-content {
       position: relative;
-      z-index: 1;
-      max-width: 800px;
+      z-index: 4;
+      max-width: 900px;
       padding-top: 8rem;
     }
 
+    /* Animated gold decorative line */
+    .hero-line {
+      height: 3px;
+      background: var(--gold);
+      margin-bottom: 2rem;
+      width: 0;
+      animation: line-expand 1.2s var(--ease-apple) 0.3s forwards;
+      will-change: width;
+    }
+
+    @keyframes line-expand {
+      from { width: 0; }
+      to { width: 80px; }
+    }
+
     .hero h1 {
-      font-size: clamp(3.5rem, 8vw, 6.5rem);
+      font-size: clamp(3.5rem, 7vw, 7rem);
       color: var(--white);
       margin-bottom: 1.5rem;
-      letter-spacing: -2px;
+      letter-spacing: -3px;
       font-weight: 700;
+      line-height: 1.05;
+      opacity: 0;
+      transform: translateY(40px);
+      animation: hero-text-in 1s var(--ease-apple) 0.5s forwards;
+      will-change: opacity, transform;
+    }
+
+    @keyframes hero-text-in {
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .hero h1 em {
@@ -414,84 +482,154 @@
     }
 
     .hero p {
-      font-size: clamp(1.05rem, 1.8vw, 1.25rem);
-      color: rgba(255, 255, 255, 0.7);
-      max-width: 600px;
+      font-size: clamp(1rem, 1.8vw, 1.2rem);
+      color: rgba(255, 255, 255, 0.72);
+      max-width: 620px;
       margin-bottom: 2.5rem;
-      line-height: 1.8;
+      line-height: 1.85;
       font-weight: 300;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: hero-text-in 1s var(--ease-apple) 0.75s forwards;
+      will-change: opacity, transform;
     }
 
-    /* Decorative gold line */
-    .hero-line {
-      width: 60px;
-      height: 3px;
-      background: var(--gold);
-      margin-bottom: 2rem;
+    .hero .btn-gold {
+      opacity: 0;
+      animation: hero-text-in 0.8s var(--ease-apple) 1s forwards;
+      will-change: opacity, transform;
+      /* Pulsing shadow */
+      box-shadow: 0 0 0 0 rgba(197, 160, 85, 0.4);
+      animation: hero-text-in 0.8s var(--ease-apple) 1s forwards, btn-pulse 2.5s ease-in-out 2s infinite;
+    }
+
+    @keyframes btn-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(197, 160, 85, 0.35); }
+      50% { box-shadow: 0 0 0 12px rgba(197, 160, 85, 0); }
+    }
+
+    /* Bouncing down arrow */
+    .hero-arrow {
+      position: absolute;
+      bottom: 6%;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      opacity: 0;
+      animation: hero-text-in 0.8s var(--ease-apple) 1.5s forwards;
+      will-change: opacity, transform;
+    }
+
+    .hero-arrow a {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      color: rgba(255,255,255,0.5);
+      transition: color var(--transition);
+    }
+
+    .hero-arrow a:hover { color: var(--gold); }
+
+    .hero-arrow-icon {
+      width: 36px;
+      height: 36px;
+      border: 1.5px solid rgba(255,255,255,0.35);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: bounce 2s ease-in-out infinite;
+      will-change: transform;
+    }
+
+    .hero-arrow-icon svg {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(8px); }
     }
 
     /* ============================================================
-       STATS / TRUST BAR
+       SDRP DEADLINE BANNER
        ============================================================ */
-    .stats {
+    #sdrp-banner {
+      background: var(--navy);
+      padding: 3rem 0;
+      position: relative;
+      clip-path: polygon(0 4%, 100% 0, 100% 96%, 0 100%);
+      margin: -2px 0;
+      border: none;
+      overflow: hidden;
+    }
+
+    #sdrp-banner::before,
+    #sdrp-banner::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 3px;
+    }
+
+    #sdrp-banner::before {
+      top: 0;
       background: var(--gold);
-      padding: 3.5rem 0;
+      animation: banner-glow-pulse 2.5s ease-in-out infinite;
+      will-change: box-shadow, opacity;
     }
 
-    .stats .container {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 2rem;
-      text-align: center;
+    #sdrp-banner::after {
+      bottom: 0;
+      background: var(--gold);
+      animation: banner-glow-pulse 2.5s ease-in-out infinite;
     }
 
-    .stat-item {
-      color: var(--white);
-    }
-
-    .stat-number {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(1.8rem, 3vw, 2.5rem);
-      font-weight: 700;
-      display: block;
-      margin-bottom: 0.25rem;
-    }
-
-    .stat-label {
-      font-size: 0.8rem;
-      font-weight: 500;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      opacity: 0.9;
-    }
-
-    .stat-item + .stat-item {
-      border-left: 1px solid rgba(255, 255, 255, 0.25);
-    }
-
-    @media (max-width: 768px) {
-      .stats .container {
-        grid-template-columns: repeat(2, 1fr);
+    @keyframes banner-glow-pulse {
+      0%, 100% {
+        box-shadow: 0 0 8px rgba(197, 160, 85, 0.4), 0 0 20px rgba(197, 160, 85, 0.2);
+        opacity: 0.9;
       }
-
-      .stat-item + .stat-item {
-        border-left: none;
-      }
-
-      .stat-item:nth-child(2n) {
-        border-left: 1px solid rgba(255, 255, 255, 0.25);
+      50% {
+        box-shadow: 0 0 20px rgba(197, 160, 85, 0.8), 0 0 40px rgba(197, 160, 85, 0.4);
+        opacity: 1;
       }
     }
 
-    @media (max-width: 480px) {
-      .stats .container {
-        grid-template-columns: 1fr;
-      }
+    .banner-date-glow {
+      color: var(--gold);
+      text-shadow:
+        0 0 10px rgba(197, 160, 85, 0.8),
+        0 0 30px rgba(197, 160, 85, 0.5),
+        0 0 60px rgba(197, 160, 85, 0.2);
+      animation: date-glow-pulse 2s ease-in-out infinite;
+      will-change: text-shadow;
+    }
 
-      .stat-item + .stat-item {
-        border-left: none;
-        border-top: 1px solid rgba(255, 255, 255, 0.25);
-        padding-top: 1.5rem;
+    @keyframes date-glow-pulse {
+      0%, 100% {
+        text-shadow:
+          0 0 10px rgba(197, 160, 85, 0.7),
+          0 0 30px rgba(197, 160, 85, 0.4),
+          0 0 60px rgba(197, 160, 85, 0.15);
+      }
+      50% {
+        text-shadow:
+          0 0 15px rgba(197, 160, 85, 1),
+          0 0 40px rgba(197, 160, 85, 0.7),
+          0 0 80px rgba(197, 160, 85, 0.35);
       }
     }
 
@@ -500,79 +638,187 @@
        ============================================================ */
     .about {
       background: var(--white);
-      padding: var(--section-pad) 0;
+      padding: var(--section-pad) 0 calc(var(--section-pad) + 3rem);
     }
 
     .about-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 4rem;
+      gap: 5rem;
       align-items: center;
+    }
+
+    /* Gold accent bar on left of text column */
+    .about-text {
+      padding-left: 1.75rem;
+      border-left: 3px solid var(--gold);
     }
 
     .about-text p {
       color: var(--text-muted);
       font-size: 1.05rem;
-      line-height: 1.8;
+      line-height: 1.85;
     }
 
-    .about-text p strong {
-      color: var(--dark-text);
+    .about-text p strong { color: var(--dark-text); }
+
+    /* Animated checkmarks */
+    .about-checklist {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 1rem;
     }
 
-    .about-image {
-      height: 500px;
-      border-radius: 8px;
+    .about-checklist li {
+      padding: 0.5rem 0;
+      color: var(--text-muted);
+      font-size: 1.05rem;
       display: flex;
-      align-items: flex-end;
-      justify-content: flex-start;
-      padding: 2rem;
-      color: rgba(255, 255, 255, 0.5);
-      font-family: 'Inter', sans-serif;
-      font-size: 0.75rem;
-      font-weight: 500;
-      letter-spacing: 3px;
-      text-transform: uppercase;
+      align-items: flex-start;
+      gap: 0.75rem;
+      opacity: 0;
+      transform: translateX(-20px);
+      transition: opacity 0.6s var(--ease-apple), transform 0.6s var(--ease-apple);
+    }
+
+    .about-checklist li.check-visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .about-checklist li:nth-child(1) { transition-delay: 0ms; }
+    .about-checklist li:nth-child(2) { transition-delay: 120ms; }
+    .about-checklist li:nth-child(3) { transition-delay: 240ms; }
+    .about-checklist li:nth-child(4) { transition-delay: 360ms; }
+    .about-checklist li:nth-child(5) { transition-delay: 480ms; }
+
+    .check-icon {
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 2px solid var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2px;
       position: relative;
       overflow: hidden;
-      background-image: linear-gradient(180deg, rgba(10,22,40,0.3) 0%, rgba(10,22,40,0.7) 100%), url('https://images.unsplash.com/photo-1560493676-04071c5f467b?w=800&q=80');
-      background-size: cover;
-      background-position: center;
-      box-shadow: 0 12px 40px rgba(0,0,0,0.15);
     }
 
-    .about-image::before {
+    .check-icon::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--gold);
+      transform: scale(0);
+      border-radius: 50%;
+      transition: transform 0.4s var(--ease-apple);
+    }
+
+    .check-visible .check-icon::before {
+      transform: scale(1);
+    }
+
+    .check-icon svg {
+      width: 12px;
+      height: 12px;
+      stroke: var(--navy);
+      fill: none;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      transition: opacity 0.2s ease 0.3s;
+    }
+
+    .check-visible .check-icon svg {
+      opacity: 1;
+    }
+
+    /* About image with zoom on scroll */
+    .about-image-wrap {
+      position: relative;
+      height: 520px;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+    }
+
+    .about-image-wrap::after {
       content: '';
       position: absolute;
       bottom: 0;
       left: 0;
       right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, var(--gold), var(--gold-light));
+      height: 5px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
+    }
+
+    .about-image-inner {
+      position: absolute;
+      inset: -5%;
+      background-image:
+        linear-gradient(180deg, rgba(10,22,40,0.2) 0%, rgba(10,22,40,0.65) 100%),
+        url('https://images.unsplash.com/photo-1560493676-04071c5f467b?w=800&q=80');
+      background-size: cover;
+      background-position: center;
+      transition: transform 0.8s var(--ease-apple);
+      will-change: transform;
+    }
+
+    .about-image-wrap:hover .about-image-inner {
+      transform: scale(1.04);
+    }
+
+    .about-image-caption {
+      position: absolute;
+      bottom: 1.5rem;
+      left: 1.5rem;
+      color: rgba(255,255,255,0.55);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      z-index: 2;
     }
 
     @media (max-width: 768px) {
-      .about {
-        padding: var(--section-pad-mobile) 0;
-      }
-
-      .about-grid {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-      }
-
-      .about-image {
-        height: 300px;
-      }
+      .about { padding: var(--section-pad-mobile) 0; }
+      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .about-text { padding-left: 1.25rem; }
+      .about-image-wrap { height: 300px; }
     }
 
     /* ============================================================
        SERVICES SECTION
        ============================================================ */
     .services {
-      background: var(--light-gray);
       padding: var(--section-pad) 0;
+      position: relative;
+      overflow: hidden;
     }
+
+    /* Diagonal pattern background */
+    .services::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(135deg, var(--light-gray) 25%, transparent 25%) -20px 0,
+        linear-gradient(225deg, var(--light-gray) 25%, transparent 25%) -20px 0,
+        linear-gradient(315deg, var(--light-gray) 25%, transparent 25%),
+        linear-gradient(45deg, var(--light-gray) 25%, transparent 25%);
+      background-size: 40px 40px;
+      background-color: #F0EEE9;
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .services .container { position: relative; z-index: 1; }
 
     .services-header {
       text-align: center;
@@ -587,31 +833,78 @@
 
     .service-card {
       background: var(--white);
-      border-radius: 8px;
+      border-radius: 10px;
       padding: 2.5rem 2rem;
-      border-top: 3px solid var(--gold);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-      transition: all var(--transition);
+      border-top: 3px solid transparent;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      transition: all 0.45s var(--ease-apple);
+      position: relative;
+      overflow: hidden;
+      will-change: transform, box-shadow;
+    }
+
+    /* Watermarked icon in corner */
+    .service-card-bg-icon {
+      position: absolute;
+      bottom: -10px;
+      right: -10px;
+      width: 120px;
+      height: 120px;
+      opacity: 0.04;
+      pointer-events: none;
+    }
+
+    .service-card-bg-icon svg {
+      width: 100%;
+      height: 100%;
+      stroke: var(--navy);
+      fill: none;
+      stroke-width: 1.2;
+    }
+
+    /* Gold border slides up on hover */
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s var(--ease-apple);
+    }
+
+    .service-card:hover::before {
+      transform: scaleX(1);
     }
 
     .service-card:hover {
-      transform: translateY(-12px);
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
-      border-top-color: var(--gold-dark);
+      transform: translateY(-14px);
+      box-shadow: 0 28px 70px rgba(0, 0, 0, 0.14);
+      border-top-color: transparent;
     }
 
     .service-icon {
-      width: 48px;
-      height: 48px;
+      width: 52px;
+      height: 52px;
       margin-bottom: 1.5rem;
       display: flex;
       align-items: center;
       justify-content: center;
+      background: rgba(197, 160, 85, 0.08);
+      border-radius: 12px;
+      transition: background 0.3s ease;
+    }
+
+    .service-card:hover .service-icon {
+      background: rgba(197, 160, 85, 0.15);
     }
 
     .service-icon svg {
-      width: 32px;
-      height: 32px;
+      width: 26px;
+      height: 26px;
       stroke: var(--gold);
       fill: none;
       stroke-width: 1.5;
@@ -620,7 +913,7 @@
     }
 
     .service-card h3 {
-      font-size: 1.3rem;
+      font-size: 1.25rem;
       color: var(--navy);
       margin-bottom: 1rem;
     }
@@ -628,7 +921,7 @@
     .service-card p {
       color: var(--text-muted);
       font-size: 0.95rem;
-      line-height: 1.7;
+      line-height: 1.75;
       margin-bottom: 1.25rem;
     }
 
@@ -637,28 +930,88 @@
       font-weight: 600;
       letter-spacing: 0.5px;
       color: var(--gold);
-      transition: color var(--transition);
+      transition: color var(--transition-fast);
     }
 
-    .service-link:hover {
-      color: var(--gold-dark);
-    }
+    .service-link:hover { color: var(--gold-dark); }
 
     @media (max-width: 1024px) {
-      .services-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
+      .services-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
     @media (max-width: 640px) {
-      .services {
-        padding: var(--section-pad-mobile) 0;
-      }
-
-      .services-grid {
-        grid-template-columns: 1fr;
-      }
+      .services { padding: var(--section-pad-mobile) 0; }
+      .services-grid { grid-template-columns: 1fr; }
     }
+
+    /* ============================================================
+       PROGRAMS SECTION
+       ============================================================ */
+    .programs-section {
+      background: var(--white);
+      padding: var(--section-pad) 0;
+    }
+
+    .programs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .program-card {
+      background: var(--light-gray);
+      padding: 1.5rem 2rem;
+      border-radius: 8px;
+      border-left: 3px solid var(--gold);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s var(--ease-apple);
+      will-change: transform, box-shadow;
+    }
+
+    /* Gold gradient reveal on hover: border grows */
+    .program-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 3px;
+      height: 100%;
+      background: linear-gradient(180deg, var(--gold-light), var(--gold), var(--gold-dark));
+      transition: width 0.4s var(--ease-apple);
+    }
+
+    .program-card:hover::before {
+      width: 6px;
+    }
+
+    .program-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.09);
+      background: var(--white);
+    }
+
+    .program-card h3 {
+      font-size: 1.1rem;
+      color: var(--navy);
+      margin-bottom: 0.4rem;
+    }
+
+    .program-card p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin: 0;
+    }
+
+    /* Stagger entrance */
+    .programs-grid .fade-in:nth-child(1) { transition-delay: 0ms; }
+    .programs-grid .fade-in:nth-child(2) { transition-delay: 150ms; }
+    .programs-grid .fade-in:nth-child(3) { transition-delay: 300ms; }
+    .programs-grid .fade-in:nth-child(4) { transition-delay: 450ms; }
+    .programs-grid .fade-in:nth-child(5) { transition-delay: 600ms; }
+    .programs-grid .fade-in:nth-child(6) { transition-delay: 750ms; }
+    .programs-grid .fade-in:nth-child(7) { transition-delay: 900ms; }
+    .programs-grid .fade-in:nth-child(8) { transition-delay: 1050ms; }
 
     /* ============================================================
        RESULTS SECTION
@@ -666,6 +1019,11 @@
     .results {
       background: var(--navy);
       padding: var(--section-pad) 0;
+      position: relative;
+      clip-path: polygon(0 4%, 100% 0, 100% 96%, 0 100%);
+      margin: -3rem 0;
+      padding-top: calc(var(--section-pad) + 3rem);
+      padding-bottom: calc(var(--section-pad) + 3rem);
     }
 
     .results-header {
@@ -685,17 +1043,18 @@
 
     .result-card {
       background: var(--navy-light);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 10px;
       padding: 2.5rem 2rem;
       position: relative;
-      transition: all var(--transition);
+      transition: all 0.45s var(--ease-apple);
+      will-change: transform;
     }
 
     .result-card:hover {
-      transform: translateY(-4px);
+      transform: translateY(-5px);
       border-color: rgba(197, 160, 85, 0.3);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
     }
 
     .result-card::before {
@@ -721,24 +1080,9 @@
     }
 
     .result-card h3 {
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       color: var(--white);
       margin-bottom: 1rem;
-    }
-
-    .result-amount {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: var(--gold);
-      margin-bottom: 1rem;
-      display: block;
-    }
-
-    .result-card p {
-      color: rgba(255, 255, 255, 0.6);
-      font-size: 0.95rem;
-      line-height: 1.7;
     }
 
     .result-arrow {
@@ -749,24 +1093,57 @@
       flex-wrap: wrap;
     }
 
+    /* Before: red-tinted, struck through */
     .result-before {
       font-family: 'Inter', sans-serif;
       font-size: 1.1rem;
-      color: rgba(200, 80, 80, 0.6);
+      color: rgba(220, 80, 70, 0.75);
       text-decoration: line-through;
+      text-decoration-color: rgba(220, 80, 70, 0.6);
     }
 
+    /* Animated arrow */
     .result-arrow-icon {
       color: var(--gold);
-      font-size: 1.2rem;
+      font-size: 1.3rem;
+      display: inline-block;
+      animation: arrow-slide 1.8s ease-in-out infinite;
+      will-change: transform;
     }
 
+    @keyframes arrow-slide {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(6px); }
+    }
+
+    /* After: large, pulsing gold glow */
     .result-after {
       font-family: 'Playfair Display', serif;
-      font-size: 2.2rem;
+      font-size: 2.6rem;
       font-weight: 700;
       color: var(--gold);
-      text-shadow: 0 0 20px rgba(197, 160, 85, 0.3);
+      animation: result-glow 2.5s ease-in-out infinite;
+      will-change: text-shadow;
+    }
+
+    @keyframes result-glow {
+      0%, 100% {
+        text-shadow:
+          0 0 10px rgba(197, 160, 85, 0.4),
+          0 0 30px rgba(197, 160, 85, 0.15);
+      }
+      50% {
+        text-shadow:
+          0 0 20px rgba(197, 160, 85, 0.7),
+          0 0 50px rgba(197, 160, 85, 0.35),
+          0 0 80px rgba(197, 160, 85, 0.1);
+      }
+    }
+
+    .result-card p {
+      color: rgba(255, 255, 255, 0.55);
+      font-size: 0.95rem;
+      line-height: 1.75;
     }
 
     @media (max-width: 1024px) {
@@ -779,6 +1156,8 @@
 
     @media (max-width: 768px) {
       .results {
+        clip-path: none;
+        margin: 0;
         padding: var(--section-pad-mobile) 0;
       }
     }
@@ -802,9 +1181,7 @@
       gap: 3rem;
     }
 
-    .team-card {
-      text-align: center;
-    }
+    .team-card { text-align: center; }
 
     .team-photo {
       width: 160px;
@@ -822,6 +1199,7 @@
       font-weight: 500;
       position: relative;
       overflow: hidden;
+      transition: box-shadow 0.4s var(--ease-apple);
     }
 
     .team-photo::after {
@@ -834,11 +1212,8 @@
       transition: opacity var(--transition);
     }
 
-    .team-card:hover .team-photo::after {
-      opacity: 1;
-    }
+    .team-card:hover .team-photo::after { opacity: 1; }
 
-    /* Headshot SVG silhouette */
     .team-photo svg {
       width: 60px;
       height: 60px;
@@ -870,16 +1245,8 @@
     }
 
     @media (max-width: 768px) {
-      .team {
-        padding: var(--section-pad-mobile) 0;
-      }
-
-      .team-grid {
-        grid-template-columns: 1fr;
-        gap: 3rem;
-        max-width: 400px;
-        margin: 0 auto;
-      }
+      .team { padding: var(--section-pad-mobile) 0; }
+      .team-grid { grid-template-columns: 1fr; gap: 3rem; max-width: 400px; margin: 0 auto; }
     }
 
     /* ============================================================
@@ -915,16 +1282,27 @@
       margin-bottom: 2rem;
     }
 
+    /* Pulsing contact icons */
     .contact-icon {
-      width: 40px;
-      height: 40px;
-      min-width: 40px;
+      width: 44px;
+      height: 44px;
+      min-width: 44px;
       background: var(--navy);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       margin-top: 2px;
+      animation: icon-pulse 3s ease-in-out infinite;
+      will-change: box-shadow;
+    }
+
+    .contact-icon:nth-of-type(2) { animation-delay: 0.6s; }
+    .contact-icon:nth-of-type(3) { animation-delay: 1.2s; }
+
+    @keyframes icon-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(197, 160, 85, 0.25); }
+      50% { box-shadow: 0 0 0 8px rgba(197, 160, 85, 0); }
     }
 
     .contact-icon svg {
@@ -952,25 +1330,19 @@
       font-size: 1.05rem;
     }
 
-    .contact-item-value a {
-      color: var(--dark-text);
-    }
+    .contact-item-value a { color: var(--dark-text); }
+    .contact-item-value a:hover { color: var(--gold); }
 
-    .contact-item-value a:hover {
-      color: var(--gold);
-    }
-
+    /* Contact form with gold left border */
     .contact-form {
       background: var(--white);
-      border-radius: 8px;
-      padding: 2.5rem;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+      border-radius: 10px;
+      padding: 2.75rem;
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.07);
       border-left: 4px solid var(--gold);
     }
 
-    .form-group {
-      margin-bottom: 1.5rem;
-    }
+    .form-group { margin-bottom: 1.5rem; }
 
     .form-group label {
       display: block;
@@ -988,20 +1360,24 @@
       width: 100%;
       font-family: 'Inter', sans-serif;
       font-size: 0.95rem;
-      padding: 0.85rem 1rem;
-      border: 1px solid var(--medium-gray);
+      padding: 0.9rem 1rem;
+      border: 1.5px solid var(--medium-gray);
       border-radius: 6px;
       background: var(--light-gray);
       color: var(--dark-text);
-      transition: border-color var(--transition), box-shadow var(--transition);
+      transition: border-color 0.3s var(--ease-apple), box-shadow 0.3s var(--ease-apple);
       outline: none;
     }
 
+    /* Dramatic gold glow ring on focus */
     .form-group input:focus,
     .form-group select:focus,
     .form-group textarea:focus {
       border-color: var(--gold);
-      box-shadow: 0 0 0 3px rgba(197, 160, 85, 0.1);
+      box-shadow:
+        0 0 0 4px rgba(197, 160, 85, 0.18),
+        0 0 20px rgba(197, 160, 85, 0.08);
+      background: var(--white);
     }
 
     .form-group textarea {
@@ -1016,18 +1392,10 @@
     }
 
     @media (max-width: 768px) {
-      .contact {
-        padding: var(--section-pad-mobile) 0;
-      }
-
-      .contact-grid {
-        grid-template-columns: 1fr;
-        gap: 3rem;
-      }
-
-      .form-row {
-        grid-template-columns: 1fr;
-      }
+      .contact { padding: var(--section-pad-mobile) 0; }
+      .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .form-row { grid-template-columns: 1fr; }
+      .contact-form { padding: 2rem 1.5rem; }
     }
 
     /* ============================================================
@@ -1037,18 +1405,35 @@
       background: var(--navy);
       padding: 4rem 0 0;
       position: relative;
+      overflow: hidden;
     }
 
+    /* Gradient top border (gold to transparent) */
     .footer::before {
       content: '';
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
-      bottom: 0;
-      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect fill="none" width="100" height="100"/><circle fill="rgba(255,255,255,0.02)" cx="50" cy="50" r="0.5"/></svg>');
-      pointer-events: none;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--gold) 30%, var(--gold-light) 50%, var(--gold) 70%, transparent);
+      z-index: 2;
     }
+
+    /* Grain texture */
+    .footer::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.025;
+      pointer-events: none;
+      z-index: 1;
+      mix-blend-mode: overlay;
+      background-size: 200px 200px;
+    }
+
+    .footer .container { position: relative; z-index: 2; }
 
     .footer-grid {
       display: grid;
@@ -1068,31 +1453,25 @@
     }
 
     .footer p {
-      color: rgba(255, 255, 255, 0.5);
+      color: rgba(255, 255, 255, 0.48);
       font-size: 0.9rem;
-      line-height: 1.7;
+      line-height: 1.75;
     }
 
-    .footer-links {
-      list-style: none;
-    }
+    .footer-links { list-style: none; }
 
-    .footer-links li {
-      margin-bottom: 0.75rem;
-    }
+    .footer-links li { margin-bottom: 0.75rem; }
 
     .footer-links a {
-      color: rgba(255, 255, 255, 0.5);
+      color: rgba(255, 255, 255, 0.48);
       font-size: 0.9rem;
-      transition: color var(--transition);
+      transition: color var(--transition-fast);
     }
 
-    .footer-links a:hover {
-      color: var(--gold);
-    }
+    .footer-links a:hover { color: var(--gold); }
 
     .footer-bottom {
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      border-top: 1px solid rgba(255, 255, 255, 0.07);
       padding: 1.5rem 0;
       display: flex;
       align-items: center;
@@ -1100,7 +1479,7 @@
     }
 
     .footer-copyright {
-      color: rgba(255, 255, 255, 0.35);
+      color: rgba(255, 255, 255, 0.3);
       font-size: 0.8rem;
     }
 
@@ -1110,32 +1489,33 @@
     }
 
     .footer-social a {
-      width: 36px;
-      height: 36px;
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.14);
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all var(--transition);
+      transition: all 0.4s var(--ease-apple);
     }
 
+    /* Neon-gold glow on hover */
     .footer-social a:hover {
       border-color: var(--gold);
       background: rgba(197, 160, 85, 0.1);
-      box-shadow: 0 0 15px rgba(197, 160, 85, 0.25);
+      box-shadow:
+        0 0 12px rgba(197, 160, 85, 0.5),
+        0 0 30px rgba(197, 160, 85, 0.2);
     }
 
     .footer-social svg {
       width: 16px;
       height: 16px;
-      fill: rgba(255, 255, 255, 0.5);
-      transition: fill var(--transition);
+      fill: rgba(255, 255, 255, 0.45);
+      transition: fill var(--transition-fast);
     }
 
-    .footer-social a:hover svg {
-      fill: var(--gold);
-    }
+    .footer-social a:hover svg { fill: var(--gold); }
 
     .footer-about-logo {
       font-family: 'Inter', sans-serif;
@@ -1148,27 +1528,54 @@
       display: block;
     }
 
-    .footer-about-logo span {
-      color: var(--gold);
-    }
+    .footer-about-logo span { color: var(--gold); }
 
     @media (max-width: 768px) {
-      .footer-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 2rem;
-      }
-
-      .footer-bottom {
-        flex-direction: column;
-        gap: 1rem;
-        text-align: center;
-      }
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
+      .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
     }
 
     @media (max-width: 480px) {
-      .footer-grid {
-        grid-template-columns: 1fr;
+      .footer-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ============================================================
+       MOBILE HERO TEXT SCALING
+       ============================================================ */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: clamp(2.8rem, 10vw, 4.5rem);
+        letter-spacing: -1.5px;
       }
+      .hero p { font-size: 1rem; }
+      .hero-content { padding-top: 6rem; }
+    }
+
+    @media (hover: none) {
+      /* Degrade hover effects on touch */
+      .service-card:hover { transform: none; }
+      .program-card:hover { transform: none; }
+      .result-card:hover { transform: none; }
+      .btn-gold:hover { transform: none; }
+    }
+
+    /* ============================================================
+       FORM SECTION LABELS (inline style replacements)
+       ============================================================ */
+    .form-section-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .form-section-label + .form-section-label,
+    .form-group + .form-section-label {
+      margin-top: 2rem;
     }
   </style>
 </head>
@@ -1215,13 +1622,24 @@
        HERO SECTION
        ============================================================ -->
   <section class="hero" id="hero">
-    <div class="container">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-texture"></div>
+    <div class="grain-overlay"></div>
+    <div class="container" style="position:relative;z-index:4;">
       <div class="hero-content">
         <div class="hero-line"></div>
-        <h1>Maximum Recovery,<br>Minimum Hassle.</h1>
+        <h1>Maximum Recovery,<br><em>Minimum Hassle.</em></h1>
         <p>Billions of dollars in USDA disaster relief go unclaimed every year &mdash; simply because producers don't know they're eligible. We find the programs you qualify for, then maximize your payments through expert handbook knowledge.</p>
         <a href="#contact" class="btn-gold">Get Started</a>
       </div>
+    </div>
+    <div class="hero-arrow">
+      <a href="#sdrp-banner" aria-label="Scroll down">
+        <div class="hero-arrow-icon">
+          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </a>
     </div>
   </section>
 
@@ -1230,10 +1648,10 @@
   <!-- ============================================================
        SDRP DEADLINE BANNER
        ============================================================ -->
-  <section id="sdrp-banner" style="background:var(--navy);padding:2.5rem 0;border-top:3px solid var(--gold);border-bottom:3px solid var(--gold);">
-    <div class="container" style="text-align:center;">
+  <section id="sdrp-banner">
+    <div class="container" style="text-align:center;position:relative;z-index:2;">
       <p style="font-family:'Inter',sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem;">Urgent Deadline</p>
-      <h2 style="font-family:'Playfair Display',serif;font-size:2rem;color:var(--white);margin-bottom:1rem;">SDRP Application Deadline: <span style="color:var(--gold);">April 30, 2026</span></h2>
+      <h2 style="font-family:'Playfair Display',serif;font-size:2rem;color:var(--white);margin-bottom:1rem;">SDRP Application Deadline: <span class="banner-date-glow">April 30, 2026</span></h2>
       <p style="color:rgba(255,255,255,0.7);max-width:700px;margin:0 auto 1.5rem;font-size:1.05rem;">The Supplemental Disaster Relief Program deadline is fast approaching. Our team maximizes SDRP payments the way a top CPA firm maximizes tax deductions. Don't leave money on the table.</p>
       <a href="#contact" class="btn-gold">File Your SDRP Application Now</a>
     </div>
@@ -1253,15 +1671,32 @@
           <p>When you work with our firm, <strong>we proactively identify every program you qualify for</strong> &mdash; including ones you've never heard of &mdash; then maximize your payments through expert knowledge of every rule in the FSA program handbooks. Think of us like a CPA who knows the tax code inside and out &mdash; we know USDA disaster relief program handbooks in and out.</p>
           <p>Our team includes <strong>former Farm Service Agency (FSA) staff</strong>, policy analysts, and agricultural specialists who work collaboratively with local FSA offices to ensure your applications are complete, accurate, and positioned for maximum benefit.</p>
           <p><strong>What we do for you:</strong></p>
-          <ul style="list-style:none;padding:0;margin-bottom:1rem;">
-            <li style="padding:0.4rem 0;color:var(--text-muted);font-size:1.05rem;">&#10003; <strong>Maximize your funds</strong> through expert handbook knowledge</li>
-            <li style="padding:0.4rem 0;color:var(--text-muted);font-size:1.05rem;">&#10003; <strong>Save your time</strong> &mdash; we handle all paperwork and complexity</li>
-            <li style="padding:0.4rem 0;color:var(--text-muted);font-size:1.05rem;">&#10003; <strong>Eliminate headaches</strong> &mdash; full-service disaster relief specialists</li>
-            <li style="padding:0.4rem 0;color:var(--text-muted);font-size:1.05rem;">&#10003; <strong>We proactively seek out USDA programs you qualify for</strong> &mdash; especially the ones that come out with short notice and are only around for 30 days (like the MASC)</li>
-            <li style="padding:0.4rem 0;color:var(--text-muted);font-size:1.05rem;">&#10003; <strong>We let you focus on farming</strong> &mdash; no more spending time at government offices</li>
+          <ul class="about-checklist" id="about-checklist">
+            <li>
+              <span class="check-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              <span><strong>Maximize your funds</strong> through expert handbook knowledge</span>
+            </li>
+            <li>
+              <span class="check-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              <span><strong>Save your time</strong> &mdash; we handle all paperwork and complexity</span>
+            </li>
+            <li>
+              <span class="check-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              <span><strong>Eliminate headaches</strong> &mdash; full-service disaster relief specialists</span>
+            </li>
+            <li>
+              <span class="check-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              <span><strong>We proactively seek out USDA programs you qualify for</strong> &mdash; especially the ones that come out with short notice and are only around for 30 days (like the MASC)</span>
+            </li>
+            <li>
+              <span class="check-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+              <span><strong>We let you focus on farming</strong> &mdash; no more spending time at government offices</span>
+            </li>
           </ul>
         </div>
-        <div class="about-image fade-in">
+        <div class="about-image-wrap fade-in">
+          <div class="about-image-inner"></div>
+          <span class="about-image-caption">American Farmers</span>
         </div>
       </div>
     </div>
@@ -1280,6 +1715,9 @@
 
         <!-- Service 1: USDA Program Access -->
         <div class="service-card fade-in">
+          <div class="service-card-bg-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          </div>
           <div class="service-icon">
             <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
           </div>
@@ -1290,6 +1728,9 @@
 
         <!-- Service 2: Crop Insurance Optimization -->
         <div class="service-card fade-in">
+          <div class="service-card-bg-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
           <div class="service-icon">
             <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           </div>
@@ -1300,6 +1741,9 @@
 
         <!-- Service 3: Grant & Block Funding -->
         <div class="service-card fade-in">
+          <div class="service-card-bg-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="18" rx="2"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          </div>
           <div class="service-icon">
             <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="18" rx="2"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
           </div>
@@ -1310,6 +1754,9 @@
 
         <!-- Service 4: Appeals & Representation -->
         <div class="service-card fade-in">
+          <div class="service-card-bg-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
           <div class="service-icon">
             <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
           </div>
@@ -1320,6 +1767,9 @@
 
         <!-- Service 5: Political Advocacy -->
         <div class="service-card fade-in">
+          <div class="service-card-bg-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9v.01"/><path d="M9 12v.01"/><path d="M9 15v.01"/><path d="M9 18v.01"/></svg>
+          </div>
           <div class="service-icon">
             <svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9v.01"/><path d="M9 12v.01"/><path d="M9 15v.01"/><path d="M9 18v.01"/></svg>
           </div>
@@ -1330,6 +1780,9 @@
 
         <!-- Service 6: Consultation & Planning -->
         <div class="service-card fade-in">
+          <div class="service-card-bg-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
           <div class="service-icon">
             <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
           </div>
@@ -1345,45 +1798,45 @@
   <!-- ============================================================
        FSA DISASTER PROGRAMS
        ============================================================ -->
-  <section style="background:var(--white);padding:var(--section-pad) 0;" id="programs">
+  <section class="programs-section" id="programs">
     <div class="container">
       <div style="text-align:center;margin-bottom:3rem;" class="fade-in">
         <span class="section-label">FSA Disaster Programs We Work</span>
         <h2 class="section-heading">Programs We Navigate for You</h2>
         <p style="color:var(--text-muted);max-width:650px;margin:0 auto;font-size:1.05rem;">We specialize in every major FSA disaster assistance program. Our handbook expertise ensures you receive maximum eligible benefits.</p>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;" class="fade-in">
-        <div style="background:var(--light-gray);padding:1.5rem 2rem;border-radius:8px;border-left:3px solid var(--gold);">
-          <h3 style="font-size:1.1rem;color:var(--navy);margin-bottom:0.5rem;">ELAP</h3>
-          <p style="color:var(--text-muted);font-size:0.9rem;margin:0;">Emergency Assistance for Livestock, Honeybees &amp; Farm-Raised Fish</p>
+      <div class="programs-grid">
+        <div class="program-card fade-in">
+          <h3>ELAP</h3>
+          <p>Emergency Assistance for Livestock, Honeybees &amp; Farm-Raised Fish</p>
         </div>
-        <div style="background:var(--light-gray);padding:1.5rem 2rem;border-radius:8px;border-left:3px solid var(--gold);">
-          <h3 style="font-size:1.1rem;color:var(--navy);margin-bottom:0.5rem;">LFP</h3>
-          <p style="color:var(--text-muted);font-size:0.9rem;margin:0;">Livestock Forage Disaster Program</p>
+        <div class="program-card fade-in">
+          <h3>LFP</h3>
+          <p>Livestock Forage Disaster Program</p>
         </div>
-        <div style="background:var(--light-gray);padding:1.5rem 2rem;border-radius:8px;border-left:3px solid var(--gold);">
-          <h3 style="font-size:1.1rem;color:var(--navy);margin-bottom:0.5rem;">LIP</h3>
-          <p style="color:var(--text-muted);font-size:0.9rem;margin:0;">Livestock Indemnity Program</p>
+        <div class="program-card fade-in">
+          <h3>LIP</h3>
+          <p>Livestock Indemnity Program</p>
         </div>
-        <div style="background:var(--light-gray);padding:1.5rem 2rem;border-radius:8px;border-left:3px solid var(--gold);">
-          <h3 style="font-size:1.1rem;color:var(--navy);margin-bottom:0.5rem;">TAP</h3>
-          <p style="color:var(--text-muted);font-size:0.9rem;margin:0;">Tree Assistance Program</p>
+        <div class="program-card fade-in">
+          <h3>TAP</h3>
+          <p>Tree Assistance Program</p>
         </div>
-        <div style="background:var(--light-gray);padding:1.5rem 2rem;border-radius:8px;border-left:3px solid var(--gold);">
-          <h3 style="font-size:1.1rem;color:var(--navy);margin-bottom:0.5rem;">NAP</h3>
-          <p style="color:var(--text-muted);font-size:0.9rem;margin:0;">Noninsured Crop Disaster Assistance Program</p>
+        <div class="program-card fade-in">
+          <h3>NAP</h3>
+          <p>Noninsured Crop Disaster Assistance Program</p>
         </div>
-        <div style="background:var(--light-gray);padding:1.5rem 2rem;border-radius:8px;border-left:3px solid var(--gold);">
-          <h3 style="font-size:1.1rem;color:var(--navy);margin-bottom:0.5rem;">ECP</h3>
-          <p style="color:var(--text-muted);font-size:0.9rem;margin:0;">Emergency Conservation Program</p>
+        <div class="program-card fade-in">
+          <h3>ECP</h3>
+          <p>Emergency Conservation Program</p>
         </div>
-        <div style="background:var(--light-gray);padding:1.5rem 2rem;border-radius:8px;border-left:3px solid var(--gold);">
-          <h3 style="font-size:1.1rem;color:var(--navy);margin-bottom:0.5rem;">SDRP</h3>
-          <p style="color:var(--text-muted);font-size:0.9rem;margin:0;">Supplemental Disaster Relief Program <strong style="color:var(--gold);">&mdash; Deadline April 30!</strong></p>
+        <div class="program-card fade-in">
+          <h3>SDRP</h3>
+          <p>Supplemental Disaster Relief Program <strong style="color:var(--gold);">&mdash; Deadline April 30!</strong></p>
         </div>
-        <div style="background:var(--light-gray);padding:1.5rem 2rem;border-radius:8px;border-left:3px solid var(--gold);">
-          <h3 style="font-size:1.1rem;color:var(--navy);margin-bottom:0.5rem;">WHIP+</h3>
-          <p style="color:var(--text-muted);font-size:0.9rem;margin:0;">Wildfire &amp; Hurricane Indemnity Program Plus</p>
+        <div class="program-card fade-in">
+          <h3>WHIP+</h3>
+          <p>Wildfire &amp; Hurricane Indemnity Program Plus</p>
         </div>
       </div>
     </div>
@@ -1504,7 +1957,7 @@
         <form class="contact-form fade-in" action="mailto:info@americancroprecovery.com" method="post" enctype="text/plain">
 
           <!-- Section: Contact Info -->
-          <p style="font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;">Contact Information</p>
+          <span class="form-section-label">Contact Information</span>
           <div class="form-row">
             <div class="form-group">
               <label for="name">Full Name *</label>
@@ -1521,7 +1974,7 @@
           </div>
 
           <!-- Section: Entity Details -->
-          <p style="font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;margin-top:2rem;">Business &amp; Entity Details</p>
+          <span class="form-section-label" style="margin-top:2rem;">Business &amp; Entity Details</span>
           <div class="form-row">
             <div class="form-group">
               <label for="farm-name">Farm / Business Name</label>
@@ -1553,7 +2006,7 @@
           </div>
 
           <!-- Section: Location -->
-          <p style="font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;margin-top:2rem;">Farm Location</p>
+          <span class="form-section-label" style="margin-top:2rem;">Farm Location</span>
           <div class="form-group">
             <label for="farm-address">Primary Farm Address *</label>
             <input type="text" id="farm-address" name="farm-address" placeholder="Start typing your address..." autocomplete="street-address" required>
@@ -1574,7 +2027,7 @@
           </div>
 
           <!-- Section: Production Info -->
-          <p style="font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;margin-top:2rem;">Production Information</p>
+          <span class="form-section-label" style="margin-top:2rem;">Production Information</span>
           <div class="form-row">
             <div class="form-group">
               <label for="operation">Operation Type</label>
@@ -1600,7 +2053,7 @@
           </div>
 
           <!-- Section: USDA / FSA History -->
-          <p style="font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;margin-top:2rem;">USDA / FSA History</p>
+          <span class="form-section-label" style="margin-top:2rem;">USDA / FSA History</span>
           <div class="form-row">
             <div class="form-group">
               <label for="fsa-registered">Registered with FSA?</label>
@@ -1638,7 +2091,7 @@
           </div>
 
           <!-- Section: Additional Info -->
-          <p style="font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;margin-top:2rem;">Additional Details</p>
+          <span class="form-section-label" style="margin-top:2rem;">Additional Details</span>
           <div class="form-group">
             <label for="message">Tell Us About Your Situation</label>
             <textarea id="message" name="message" placeholder="Describe your operation, any recent disasters or losses, and what kind of help you're looking for..."></textarea>
@@ -1726,31 +2179,72 @@
   </footer>
 
   <!-- ============================================================
-     SCRIPTS — Minimal vanilla JS
+     SCRIPTS — Vanilla JS
      ============================================================ -->
   <script>
-    // Nav shrink on scroll
+    // ─── Nav shrink on scroll ───────────────────────────────────
     const nav = document.getElementById('nav');
     window.addEventListener('scroll', () => {
       nav.classList.toggle('scrolled', window.scrollY > 60);
     }, { passive: true });
 
-    // Intersection Observer for fade-in animations
+    // ─── Intersection Observer: fade-in elements ────────────────
     const fadeEls = document.querySelectorAll('.fade-in');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry, i) => {
+    const fadeObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          // Stagger siblings slightly
-          const delay = Array.from(entry.target.parentElement.children)
-            .filter(c => c.classList.contains('fade-in'))
-            .indexOf(entry.target) * 100;
-          setTimeout(() => entry.target.classList.add('visible'), delay);
-          observer.unobserve(entry.target);
+          // Stagger siblings inside same parent
+          const siblings = Array.from(entry.target.parentElement.children)
+            .filter(c => c.classList.contains('fade-in'));
+          const idx = siblings.indexOf(entry.target);
+          setTimeout(() => entry.target.classList.add('visible'), idx * 150);
+          fadeObserver.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+    }, { threshold: 0.12, rootMargin: '0px 0px -50px 0px' });
 
-    fadeEls.forEach(el => observer.observe(el));
+    fadeEls.forEach(el => fadeObserver.observe(el));
+
+    // ─── Animated checklist (about section) ─────────────────────
+    const checklist = document.getElementById('about-checklist');
+    if (checklist) {
+      const checkItems = checklist.querySelectorAll('li');
+      const checkObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            checkItems.forEach((item, i) => {
+              setTimeout(() => item.classList.add('check-visible'), i * 120);
+            });
+            checkObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.3 });
+      checkObserver.observe(checklist);
+    }
+
+    // ─── Parallax / subtle scroll on hero bg ────────────────────
+    const heroBg = document.querySelector('.hero-bg');
+    if (heroBg && window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+      window.addEventListener('scroll', () => {
+        const scrolled = window.scrollY;
+        if (scrolled < window.innerHeight) {
+          heroBg.style.transform = `translateY(${scrolled * 0.25}px) scale(1.08)`;
+        }
+      }, { passive: true });
+    }
+
+    // ─── About image parallax ───────────────────────────────────
+    const aboutImg = document.querySelector('.about-image-inner');
+    if (aboutImg && window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+      const aboutSection = document.querySelector('.about');
+      window.addEventListener('scroll', () => {
+        const rect = aboutSection.getBoundingClientRect();
+        const progress = -rect.top / (rect.height + window.innerHeight);
+        if (progress >= -0.2 && progress <= 1.2) {
+          aboutImg.style.transform = `translateY(${progress * 30}px)`;
+        }
+      }, { passive: true });
+    }
   </script>
 
   <!-- Google Places Autocomplete for farm address -->
@@ -1765,7 +2259,6 @@
         });
         autocomplete.addListener('place_changed', function() {
           const place = autocomplete.getPlace();
-          // Store structured address data for weather API lookup
           if (place.address_components) {
             let county = '', state = '', zip = '';
             place.address_components.forEach(function(c) {
@@ -1773,7 +2266,6 @@
               if (c.types.includes('administrative_area_level_1')) state = c.short_name;
               if (c.types.includes('postal_code')) zip = c.long_name;
             });
-            // Store in hidden fields or data attributes for backend use
             addressInput.dataset.county = county;
             addressInput.dataset.state = state;
             addressInput.dataset.zip = zip;
