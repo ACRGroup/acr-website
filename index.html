@@ -2190,20 +2190,29 @@
 
     // ─── Intersection Observer: fade-in elements ────────────────
     const fadeEls = document.querySelectorAll('.fade-in');
+    // Hard fallback: after 2s, force-show everything in case observer doesn't fire
+    const fadeFallback = setTimeout(() => {
+      fadeEls.forEach(el => el.classList.add('visible'));
+    }, 2000);
+
     const fadeObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          // Stagger siblings inside same parent
           const siblings = Array.from(entry.target.parentElement.children)
             .filter(c => c.classList.contains('fade-in'));
           const idx = siblings.indexOf(entry.target);
-          setTimeout(() => entry.target.classList.add('visible'), idx * 150);
+          setTimeout(() => entry.target.classList.add('visible'), idx * 100);
           fadeObserver.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.12, rootMargin: '0px 0px -50px 0px' });
+    }, { threshold: 0, rootMargin: '0px 0px 0px 0px' });
 
     fadeEls.forEach(el => fadeObserver.observe(el));
+    // Also immediately mark any element already in the viewport
+    fadeEls.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight) el.classList.add('visible');
+    });
 
     // ─── Animated checklist (about section) ─────────────────────
     const checklist = document.getElementById('about-checklist');
@@ -2218,7 +2227,7 @@
             checkObserver.unobserve(entry.target);
           }
         });
-      }, { threshold: 0.3 });
+      }, { threshold: 0 });
       checkObserver.observe(checklist);
     }
 
