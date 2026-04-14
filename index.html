@@ -220,13 +220,19 @@
        SCROLL ANIMATIONS — dramatic (60px, 1s, Apple easing)
        ============================================================ */
     .fade-in {
-      opacity: 0;
-      transform: translateY(60px);
+      opacity: 1;
+      transform: translateY(0);
       transition: opacity 1s var(--ease-apple), transform 1s var(--ease-apple);
       will-change: opacity, transform;
     }
 
-    .fade-in.visible {
+    /* JS applies this class to animate in; content is visible by default without it */
+    .fade-in.js-ready {
+      opacity: 0;
+      transform: translateY(60px);
+    }
+
+    .fade-in.js-ready.visible {
       opacity: 1;
       transform: translateY(0);
     }
@@ -2190,10 +2196,20 @@
 
     // ─── Intersection Observer: fade-in elements ────────────────
     const fadeEls = document.querySelectorAll('.fade-in');
-    // Hard fallback: after 2s, force-show everything in case observer doesn't fire
-    const fadeFallback = setTimeout(() => {
-      fadeEls.forEach(el => el.classList.add('visible'));
-    }, 2000);
+    // Mark elements as JS-controlled so they can start hidden
+    // Only elements NOT already in the viewport get the hide-then-reveal treatment
+    fadeEls.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top >= window.innerHeight) {
+        el.classList.add('js-ready'); // will be hidden until observed
+      }
+      // Elements already visible on load stay visible
+    });
+
+    // Hard fallback: after 1.5s, force-show everything
+    setTimeout(() => {
+      fadeEls.forEach(el => { el.classList.add('visible'); el.classList.remove('js-ready'); });
+    }, 1500);
 
     const fadeObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -2205,14 +2221,9 @@
           fadeObserver.unobserve(entry.target);
         }
       });
-    }, { threshold: 0, rootMargin: '0px 0px 0px 0px' });
+    }, { threshold: 0, rootMargin: '0px 0px 100px 0px' });
 
     fadeEls.forEach(el => fadeObserver.observe(el));
-    // Also immediately mark any element already in the viewport
-    fadeEls.forEach(el => {
-      const rect = el.getBoundingClientRect();
-      if (rect.top < window.innerHeight) el.classList.add('visible');
-    });
 
     // ─── Animated checklist (about section) ─────────────────────
     const checklist = document.getElementById('about-checklist');
