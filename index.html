@@ -219,22 +219,14 @@
     /* ============================================================
        SCROLL ANIMATIONS — dramatic (60px, 1s, Apple easing)
        ============================================================ */
+    /* Scroll animations disabled — content always visible */
     .fade-in {
-      opacity: 1;
-      transform: translateY(0);
-      transition: opacity 1s var(--ease-apple), transform 1s var(--ease-apple);
-      will-change: opacity, transform;
+      opacity: 1 !important;
+      transform: none !important;
     }
-
-    /* JS applies this class to animate in; content is visible by default without it */
     .fade-in.js-ready {
-      opacity: 0;
-      transform: translateY(60px);
-    }
-
-    .fade-in.js-ready.visible {
-      opacity: 1;
-      transform: translateY(0);
+      opacity: 1 !important;
+      transform: none !important;
     }
 
     /* Stagger siblings */
