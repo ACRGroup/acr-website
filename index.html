@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="American Crop Recovery — Expert USDA disaster relief advocacy for America's farmers. We recover what's yours.">
   <title>American Crop Recovery | USDA Disaster Relief Advocacy</title>
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="shortcut icon" type="image/png" href="logo.png">
 
   <!-- Preconnect for performance -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -114,8 +116,8 @@
       --medium-gray: #E8E6E1;
       --dark-text: #1A1A2E;
       --text-muted: #5A5A6E;
-      --section-pad: 7rem;
-      --section-pad-mobile: 4rem;
+      --section-pad: 5rem;
+      --section-pad-mobile: 3rem;
       --container: 1200px;
       --ease-apple: cubic-bezier(0.16, 1, 0.3, 1);
       --transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -391,7 +393,7 @@
     .hero-bg {
       position: absolute;
       inset: 0;
-      background-image: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1920&q=80');
+      background-image: url('hero-bg.jpg');
       background-size: cover;
       background-position: center;
       will-change: transform;
@@ -760,7 +762,7 @@
       inset: -5%;
       background-image:
         linear-gradient(180deg, rgba(10,22,40,0.2) 0%, rgba(10,22,40,0.65) 100%),
-        url('https://images.unsplash.com/photo-1560493676-04071c5f467b?w=800&q=80');
+        url('about-bg.jpg');
       background-size: cover;
       background-position: center;
       transition: transform 0.8s var(--ease-apple);
@@ -1612,6 +1614,7 @@
         <li><a href="#programs" onclick="document.getElementById('nav-toggle').checked=false">Programs</a></li>
         <li><a href="#results" onclick="document.getElementById('nav-toggle').checked=false">Results</a></li>
         <li><a href="#contact" onclick="document.getElementById('nav-toggle').checked=false">Contact</a></li>
+        <li><a href="tel:18662767911" style="color:var(--gold);font-weight:700;border:1px solid var(--gold);padding:0.4rem 0.9rem;border-radius:4px;letter-spacing:0.5px;transition:all 0.3s;">1-866-CROPS-911</a></li>
       </ul>
     </div>
   </nav>
@@ -1627,7 +1630,7 @@
     <div class="container" style="position:relative;z-index:4;">
       <div class="hero-content">
         <div class="hero-line"></div>
-        <h1>Maximum Recovery,<br><em>Minimum Hassle.</em></h1>
+        <h1>Maximum Recovery,<br>Expert Representation.</h1>
         <p>Billions of dollars in USDA disaster relief go unclaimed every year &mdash; simply because producers don't know they're eligible. We find the programs you qualify for, then maximize your payments through expert handbook knowledge.</p>
         <a href="#contact" class="btn-gold">Get Started</a>
       </div>
@@ -1665,7 +1668,10 @@
           <span class="section-label">Who We Are</span>
           <h2 class="section-heading">Agricultural Recovery Specialists</h2>
           <p>When the USDA rolled out the Emergency Relief Program (ERP), <strong>over 218,000 producers received Track 1 payments but never applied for Track 2</strong>. Why? Because Track 1 was automatic &mdash; no application required. Track 2 required producers to file an application, and most never knew it existed.</p>
-          <p>Here's what they missed: <strong>Track 2 payments were routinely 10x higher than Track 1</strong>. Billions of dollars went unclaimed simply because no one told these farmers they were eligible or helped them apply.</p>
+          <div style="background:var(--navy);border-left:4px solid var(--gold);border-radius:6px;padding:1.25rem 1.5rem;margin:1.5rem 0;">
+            <p style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--gold);margin:0 0 0.25rem;">10x Higher Payments</p>
+            <p style="color:rgba(255,255,255,0.7);font-size:0.9rem;margin:0;">Track 2 payments were routinely 10x higher than Track 1. Billions went unclaimed because no one helped these farmers apply.</p>
+          </div>
           <p>When you work with our firm, <strong>we proactively identify every program you qualify for</strong> &mdash; including ones you've never heard of &mdash; then maximize your payments through expert knowledge of every rule in the FSA program handbooks. Think of us like a CPA who knows the tax code inside and out &mdash; we know USDA disaster relief program handbooks in and out.</p>
           <p>Our team includes <strong>former Farm Service Agency (FSA) staff</strong>, policy analysts, and agricultural specialists who work collaboratively with local FSA offices to ensure your applications are complete, accurate, and positioned for maximum benefit.</p>
           <p><strong>What we do for you:</strong></p>
@@ -1804,6 +1810,11 @@
         <p style="color:var(--text-muted);max-width:650px;margin:0 auto;font-size:1.05rem;">We specialize in every major FSA disaster assistance program. Our handbook expertise ensures you receive maximum eligible benefits.</p>
       </div>
       <div class="programs-grid">
+        <!-- SDRP FIRST — active deadline -->
+        <div class="program-card fade-in" style="border-left:4px solid #e84c3d;background:linear-gradient(135deg,#fff 0%,rgba(232,76,61,0.04) 100%);">
+          <h3 style="color:var(--navy);">SDRP <span style="display:inline-block;background:#e84c3d;color:#fff;font-family:'Inter',sans-serif;font-size:0.6rem;font-weight:700;letter-spacing:1px;padding:2px 7px;border-radius:10px;vertical-align:middle;margin-left:6px;">DEADLINE APR 30</span></h3>
+          <p>Supplemental Disaster Relief Program &mdash; <strong style="color:#e84c3d;">File before April 30, 2026</strong></p>
+        </div>
         <div class="program-card fade-in">
           <h3>ELAP</h3>
           <p>Emergency Assistance for Livestock, Honeybees &amp; Farm-Raised Fish</p>
@@ -1829,10 +1840,6 @@
           <p>Emergency Conservation Program</p>
         </div>
         <div class="program-card fade-in">
-          <h3>SDRP</h3>
-          <p>Supplemental Disaster Relief Program <strong style="color:var(--gold);">&mdash; Deadline April 30!</strong></p>
-        </div>
-        <div class="program-card fade-in">
           <h3>WHIP+</h3>
           <p>Wildfire &amp; Hurricane Indemnity Program Plus</p>
         </div>
@@ -1847,7 +1854,7 @@
     <div class="container">
       <div class="results-header fade-in">
         <span class="section-label">Proven Results</span>
-        <h2 class="section-heading">Maximizing What Farmers Are Entitled To</h2>
+        <h2 class="section-heading">Proven Results</h2>
         <p style="color:rgba(255,255,255,0.6);max-width:650px;margin:0 auto;font-size:1.05rem;">Like a CPA maximizing tax deductions, we navigate complex USDA handbooks to ensure producers receive every dollar they qualify for.</p>
       </div>
       <div class="results-grid">
